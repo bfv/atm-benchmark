@@ -1,0 +1,55 @@
+ADD TABLE "config"
+  DESCRIPTION "Describes the configuration for each test."
+  DUMP-NAME "config"
+
+ADD FIELD "id" OF "config" AS integer 
+  FORMAT ">9"
+  INITIAL "0"
+  LABEL "No"
+  COLUMN-LABEL "No"
+  ORDER 10
+
+ADD FIELD "program" OF "config" AS character 
+  DESCRIPTION "Name of program to be run"
+  FORMAT "x(10)"
+  INITIAL ""
+  LABEL "Prog"
+  COLUMN-LABEL "Prog"
+  HELP "Name of program to run"
+  ORDER 20
+
+ADD FIELD "clients" OF "config" AS integer 
+  FORMAT ">>9"
+  INITIAL "0"
+  LABEL "Clients"
+  COLUMN-LABEL "Cl"
+  ORDER 30
+
+ADD FIELD "runtime" OF "config" AS integer 
+  DESCRIPTION "Measurement interval in seconds"
+  FORMAT ">>>9"
+  INITIAL "300"
+  LABEL "Time"
+  COLUMN-LABEL "Time"
+  ORDER 40
+
+ADD FIELD "warmup" OF "config" AS integer 
+  FORMAT ">>>9"
+  INITIAL "60"
+  LABEL "Warmup"
+  COLUMN-LABEL "Warmup"
+  HELP "Warm up seconds before measurement interval"
+  ORDER 50
+
+ADD FIELD "rundown" OF "config" AS integer 
+  DESCRIPTION "Rundown seconds after measurement interval"
+  FORMAT ">>>9"
+  INITIAL "60"
+  LABEL "Rundown"
+  COLUMN-LABEL "Rundown"
+  ORDER 60
+
+ADD INDEX "id" ON "config" 
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 

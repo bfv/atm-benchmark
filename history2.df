@@ -1,0 +1,60 @@
+ADD TABLE "history2"
+  DUMP-NAME "history2"
+
+ADD FIELD "trx_id" OF "history2" AS integer 
+  FORMAT ">>>>>>>9"
+  INITIAL "0"
+  ORDER 5
+
+ADD FIELD "branch" OF "history2" AS integer 
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 10
+
+ADD FIELD "teller" OF "history2" AS integer 
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 20
+
+ADD FIELD "account" OF "history2" AS integer 
+  FORMAT ">>>>>>>>>9"
+  INITIAL "0"
+  ORDER 30
+
+ADD FIELD "balance" OF "history2" AS decimal 
+  FORMAT "->>,>>>,>>9.99"
+  INITIAL "0"
+  DECIMALS 2
+  ORDER 40
+
+ADD FIELD "delta" OF "history2" AS decimal 
+  FORMAT "->>,>>>,>>9.99"
+  INITIAL "0"
+  DECIMALS 2
+  ORDER 50
+
+ADD FIELD "trx_date" OF "history2" AS date 
+  FORMAT "99/99/99"
+  INITIAL ?
+  ORDER 60
+
+ADD FIELD "trx_time" OF "history2" AS integer 
+  FORMAT ">>>>>9"
+  INITIAL "0"
+  ORDER 70
+
+ADD FIELD "fill1" OF "history2" AS character 
+  FORMAT "x(40)"
+  INITIAL "1234567890123456789012345"
+  ORDER 80
+
+ADD INDEX "histid" ON "history2" 
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "trx_id" ASCENDING 
+
+.
+PSC
+codepage=ibm850
+.
+0000001007

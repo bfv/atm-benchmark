@@ -1,0 +1,44 @@
+ADD TABLE "teller"
+  DUMP-NAME "teller"
+
+ADD FIELD "balance" OF "teller" AS decimal 
+  FORMAT "->>,>>>,>>9.99"
+  INITIAL "0"
+  DECIMALS 2
+  ORDER 10
+
+ADD FIELD "id" OF "teller" AS integer 
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 20
+
+ADD FIELD "branchid" OF "teller" AS integer 
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 30
+
+ADD FIELD "fill1" OF "teller" AS character 
+  FORMAT "x(30)"
+  INITIAL "123456789012345678901234567890"
+  ORDER 40
+
+ADD FIELD "fill2" OF "teller" AS character 
+  FORMAT "x(30)"
+  INITIAL "123456789012345678901234567890"
+  ORDER 50
+
+ADD FIELD "fill3" OF "teller" AS character 
+  FORMAT "x(30)"
+  INITIAL "123456789012345678901234567890"
+  ORDER 70
+
+ADD INDEX "teller" ON "teller" 
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+.
+PSC
+codepage=ibm850
+.
+0000000752

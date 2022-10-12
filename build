@@ -1,0 +1,163 @@
+#!/bin/sh
+#
+# ATM performance test:
+# build the test database
+# 21-Sep-95 ghb 
+#
+cat version.txt
+#
+: ${DLC?'You must first set DLC'}
+#
+CURDIR=`pwd`;export CURDIR
+PROPATH=:$CURDIR; export PROPATH
+#
+# db name
+#
+DBNAME=atm
+#
+# database size in tps
+#
+SCALE=10
+#
+# number of load processes
+#
+NUMLOADERS=4
+#
+# bi file cluster and block size
+#
+CLSZ=2048
+BIBSZ=16
+#
+# where messages go
+#
+LOG=build.log
+HISTORY=allruns.log
+SUMMARY=summary.log
+#
+# A copy of the empty database is loaded from here
+#
+EMPTYDB=$DLC/empty
+#
+# Use executables in this directory for utilities to make database
+#
+UTILBIN=$DLC/bin
+#
+PROUTIL=$UTILBIN/_proutil
+PROCOPY="$UTILBIN/_dbutil procopy"
+PROSTRCT="$UTILBIN/_dbutil prostrct"
+#
+# Use executables in this directory for server, client, page writers
+#
+EXEBIN=$DLC/bin
+#
+PROSV=$EXEBIN/_mprosrv
+PROCL=$EXEBIN/_progres
+PROAPW=$EXEBIN/_mprshut
+PROBIW=$EXEBIN/_mprshut
+PROAIW=$EXEBIN/_mprshut
+#
+# Server options
+#
+SVOPT1="-n 20 -L 1024"
+SVOPT2="-B 1000 "
+SVOPT3="-bibufs 20"
+CLNOPT1="-b"
+LDROPT1="-b"
+#
+# *******************************************************************
+# Some sanity checks...
+#
+    if [ -f $DBNAME.lk ]
+    then
+        echo "Found a $DBNAME.lk. Server running?"
+        echo "Exiting in disgrace."
+        exit 1
+    fi
+    if [ -f $DBNAME.db ]
+    then
+        echo "You already have a $DBNAME.db."
+        echo "Exiting in disgrace."
+        exit 1
+    fi
+    if [ -f $DBNAME.st ]
+    then
+        echo "$DBNAME.st contains..."
+        echo
+        cat $DBNAME.st
+        echo
+    else
+        echo "There is no $DBNAME.st."
+        echo "Exiting in disgrace."
+        exit 1
+    fi
+#
+# give the guy a chance to change his mind
+#
+    echo "Build $SCALE tps $DBNAME database using $NUMLOADERS processes"
+    echo "You have 5 seconds to cancel if you forgot something ..."
+    sleep 5
+    rm -f build*.log
+#
+# *******************************************************************
+# Now create the database
+#
+    cat version.txt >$LOG
+    date >>$LOG
+#
+    echo "Create void $DBNAME database using $DBNAME.st ..." | tee -a $LOG
+    cat $DBNAME.st >>$LOG
+    echo >>$SUMMARY
+    date >>$SUMMARY
+    echo >>$SUMMARY
+    echo $CURDIR >>$SUMMARY
+    cat $DBNAME.st >>$SUMMARY
+    echo >>$SUMMARY
+    $PROSTRCT create $DBNAME
+    echo "Copy empty database into $DBNAME ..." | tee -a $LOG
+    $PROCOPY $EMPTYDB $DBNAME
+#
+# truncate the bi file and set cluster size
+#
+    echo "Cluster size is $CLSZ." | tee -a $LOG
+    echo "BI block size is $BIBSZ." | tee -a $LOG
+    echo "Truncate $DBNAME.bi ..." | tee -a $LOG
+    $PROUTIL $DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
+#
+# start the server
+#
+    echo "Starting server for $DBNAME ..." | tee -a $LOG
+    echo "Server options:" >>$LOG
+    echo "Sv opt 1 " $SVOPT1 >>$LOG
+    echo "Sv opt 2 " $SVOPT2 >>$LOG
+    echo "Sv opt 3 " $SVOPT3 >>$LOG
+    echo >>$LOG
+    $PROSV $DBNAME $SVOPT1 $SVOPT2 $SVOPT3 >>$LOG 2>&1
+    sleep 5
+    echo "Starting bi writer ..." | tee -a $LOG
+    $PROBIW $DBNAME -C biw $BIWOPT1 >>$LOG 2>&1 &
+    sleep 3
+    echo "Starting page writer ..." | tee -a $LOG
+    $PROAPW $DBNAME -C apw $APWOPT1 >>$LOG 2>&1 &
+#
+# load the dictionary entries
+#
+    echo "Loading table definitions ..." | tee -a $LOG
+    $PROCL $DBNAME $CLNOPT1 -p create.p >>$LOG 2>&1
+#
+# Load the data
+#
+    echo "Loading $DBNAME data using load.p ..." | tee -a $LOG
+    echo "This will take awhile ..." | tee -a $LOG
+#
+# start the loader programs
+#
+    LOADER=1
+    while [ $LOADER -le $NUMLOADERS ]
+    do
+        export SCALE NUMLOADERS LOADER 
+        echo "Starting loader" $LOADER " in background ..." | tee -a $LOG
+        $PROCL $DBNAME $LDROPT1 -p load.p >>$LOG 2>&1 &
+        LOADER=`expr $LOADER + 1`
+    done
+    echo "Database loading will continue in the background..."
+    echo "Check the log files (build*.log) to see when it is complete."

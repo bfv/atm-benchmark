@@ -1,0 +1,39 @@
+ADD TABLE "branch"
+  DUMP-NAME "branch"
+
+ADD FIELD "balance" OF "branch" AS decimal 
+  FORMAT "->>,>>>,>>9.99"
+  INITIAL "0"
+  DECIMALS 2
+  ORDER 10
+
+ADD FIELD "id" OF "branch" AS integer 
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 20
+
+ADD FIELD "fill1" OF "branch" AS character 
+  FORMAT "x(30)"
+  INITIAL "123456789012345678901234567890"
+  ORDER 30
+
+ADD FIELD "fill2" OF "branch" AS character 
+  FORMAT "x(30)"
+  INITIAL "123456789012345678901234567890"
+  ORDER 40
+
+ADD FIELD "fill3" OF "branch" AS character 
+  FORMAT "x(30)"
+  INITIAL "123456789012345678901234567890"
+  ORDER 50
+
+ADD INDEX "branch" ON "branch" 
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+.
+PSC
+codepage=ibm850
+.
+0000000664

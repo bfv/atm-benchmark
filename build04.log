@@ -1,0 +1,30 @@
+17:20 Hello. Loader 4 of 4 speaking. Today is 09/03/99
+17:20 Beginning a 10 tps load.
+17:20 1000000 total accounts will be created
+17:20 1000 total tellers will be created
+17:20 100 total branches will be created
+17:20 Starting on 250000 accounts at account 750001
+17:20 Estimated time left will be reported every 12500 accounts
+17:22 Did 12500 accounts, 237500 left. 33 min to go at 28924 / min
+17:23 Did 25000 accounts, 225000 left. 30 min to go at 29633 / min
+17:25 Did 37500 accounts, 212500 left. 28 min to go at 29939 / min
+17:27 Did 50000 accounts, 200000 left. 27 min to go at 29688 / min
+17:29 Did 62500 accounts, 187500 left. 27 min to go at 27488 / min
+17:31 Did 75000 accounts, 175000 left. 29 min to go at 24105 / min
+17:33 Did 87500 accounts, 162500 left. 27 min to go at 23808 / min
+17:35 Did 100000 accounts, 150000 left. 25 min to go at 24020 / min
+17:37 Did 112500 accounts, 137500 left. 23 min to go at 23557 / min
+17:39 Did 125000 accounts, 125000 left. 19 min to go at 26145 / min
+17:41 Did 137500 accounts, 112500 left. 16 min to go at 29001 / min
+17:42 Did 150000 accounts, 100000 left. 14 min to go at 28345 / min
+17:44 Did 162500 accounts, 87500 left. 12 min to go at 28043 / min
+17:46 Did 175000 accounts, 75000 left. 11 min to go at 27611 / min
+17:48 Did 187500 accounts, 62500 left. 9 min to go at 27092 / min
+17:50 Did 200000 accounts, 50000 left. 7 min to go at 28196 / min
+17:51 Did 212500 accounts, 37500 left. 5 min to go at 28282 / min
+17:53 Did 225000 accounts, 25000 left. 4 min to go at 28128 / min
+17:55 Did 237500 accounts, 12500 left. 2 min to go at 27837 / min
+17:57 250000 Accounts created in 00:36
+17:57 250 Tellers created
+17:57 25 Branches created
+09/03/99 17:57 Loader 4 finished. Goodbye

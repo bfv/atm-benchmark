@@ -1,0 +1,77 @@
+ADD TABLE "client"
+  DESCRIPTION "Control table for performance test clients"
+  DUMP-NAME "client"
+
+ADD FIELD "id" OF "client" AS integer 
+  FORMAT ">>9"
+  INITIAL "0"
+  ORDER 10
+
+ADD FIELD "start" OF "client" AS integer 
+  DESCRIPTION "measurement interval start time"
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 20
+
+ADD FIELD "finish" OF "client" AS integer 
+  DESCRIPTION "measurement interval end time"
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 30
+
+ADD FIELD "numtx" OF "client" AS integer 
+  FORMAT ">>>>9"
+  INITIAL "0"
+  ORDER 40
+
+ADD FIELD "residence" OF "client" AS integer 
+  DESCRIPTION "Residence time in 10ms buckets."
+  FORMAT ">>>9"
+  INITIAL "0"
+  EXTENT 200
+  ORDER 50
+
+ADD FIELD "runtime" OF "client" AS integer 
+  DESCRIPTION "runtime in seconds"
+  FORMAT ">>>9"
+  INITIAL "0"
+  ORDER 60
+
+ADD FIELD "warmup" OF "client" AS integer 
+  DESCRIPTION "warmup seconds before measurement interval starts"
+  FORMAT ">>>>9"
+  INITIAL "0"
+  LABEL "warmup"
+  COLUMN-LABEL "warmup"
+  ORDER 70
+
+ADD FIELD "rundown" OF "client" AS integer 
+  DESCRIPTION "rundown seconds after measurement interval ends."
+  FORMAT ">>>>9"
+  INITIAL "0"
+  LABEL "rundown"
+  COLUMN-LABEL "rundown"
+  ORDER 80
+
+ADD FIELD "topres" OF "client" AS integer 
+  DESCRIPTION "residence time in ms of longest transaction"
+  FORMAT ">>>>>9"
+  INITIAL "0"
+  ORDER 90
+
+ADD FIELD "totres" OF "client" AS integer 
+  DESCRIPTION "total residence time"
+  FORMAT ">>>>>>>>>9"
+  INITIAL "0"
+  ORDER 100
+
+ADD INDEX "id" ON "client" 
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+.
+PSC
+codepage=ibm850
+.
+0000001505

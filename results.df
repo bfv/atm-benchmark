@@ -1,0 +1,127 @@
+ADD TABLE "results"
+  DESCRIPTION "results for each test."
+  DUMP-NAME "results"
+
+ADD FIELD "id" OF "results" AS integer 
+  FORMAT ">9"
+  INITIAL "0"
+  LABEL "No"
+  COLUMN-LABEL "No"
+  ORDER 10
+
+ADD FIELD "program" OF "results" AS character 
+  DESCRIPTION "Name of program that was used"
+  FORMAT "x(10)"
+  INITIAL ""
+  LABEL "Prog"
+  COLUMN-LABEL "Prog"
+  HELP "Name of program to run"
+  ORDER 20
+
+ADD FIELD "clients" OF "results" AS integer 
+  FORMAT ">>9"
+  INITIAL "0"
+  LABEL "Clients"
+  COLUMN-LABEL "Cl"
+  ORDER 30
+
+ADD FIELD "runtime" OF "results" AS integer 
+  DESCRIPTION "Measurement interval in seconds"
+  FORMAT ">>>9"
+  INITIAL "300"
+  LABEL "Time"
+  COLUMN-LABEL "Time"
+  ORDER 40
+
+ADD FIELD "warmup" OF "results" AS integer 
+  FORMAT ">>>9"
+  INITIAL "60"
+  LABEL "Warmup"
+  COLUMN-LABEL "Warmup"
+  HELP "Warm up seconds before measurement interval"
+  ORDER 50
+
+ADD FIELD "rundown" OF "results" AS integer 
+  DESCRIPTION "Rundown seconds after measurement interval"
+  FORMAT ">>>9"
+  INITIAL "60"
+  LABEL "Rundown"
+  COLUMN-LABEL "Rundown"
+  ORDER 60
+
+ADD FIELD "numtx" OF "results" AS integer 
+  FORMAT ">>>>>9"
+  INITIAL "0"
+  LABEL "Trans"
+  COLUMN-LABEL "Trans"
+  ORDER 70
+
+ADD FIELD "tps" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "Tps"
+  COLUMN-LABEL "Tps"
+  DECIMALS 4
+  ORDER 80
+
+ADD FIELD "maxtps" OF "results" AS integer 
+  FORMAT ">>9"
+  INITIAL "0"
+  LABEL "Peak"
+  COLUMN-LABEL "Peak"
+  ORDER 90
+
+ADD FIELD "concurrency" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "Conc"
+  COLUMN-LABEL "Conc"
+  DECIMALS 2
+  ORDER 100
+
+ADD FIELD "avgres" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "Avg R"
+  DECIMALS 2
+  ORDER 110
+
+ADD FIELD "minres" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "Min R"
+  DECIMALS 2
+  ORDER 120
+
+ADD FIELD "maxres" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "Max R"
+  DECIMALS 2
+  ORDER 130
+
+ADD FIELD "p50res" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "50% R"
+  DECIMALS 2
+  ORDER 140
+
+ADD FIELD "p90res" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "90% R"
+  DECIMALS 2
+  ORDER 150
+
+ADD FIELD "p95res" OF "results" AS decimal 
+  FORMAT ">>9.9"
+  INITIAL "0"
+  LABEL "95% R"
+  DECIMALS 2
+  ORDER 160
+
+ADD INDEX "id" ON "results" 
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 

@@ -1,0 +1,283 @@
+**************** The ATM performance testing kit ******************************
+**************** Version 3.4 21-Sep-95 ghb       ******************************
+**************** (c) Copyright 1993, 1994, 1995  ******************************
+**************** Progress Software Corporation   ******************************
+**************** All Rights Reserved             ******************************
+
+This directory contains the files contained in the ATM performance testing
+kit. It has everything required to build a test database and run the test,
+except for the Progress 4gl and RDBMS software.
+
+It requires Progress Version 7.3 or later.
+
+It will probably not work without modification unless you are using the
+Bourne shell or bash.
+
+**************** Introduction *************************************************
+
+This test is designed to measure transaction throughput of a system running
+the Progress database. The results are reported in transactions per second
+(tps).
+
+The test is performed by having a number of clients execute a simple
+transaction over and over for a period of time and counting how many
+are successfully completed during the time period. 
+
+The transactions are fairly simple and are update intensive. They do not
+measure all aspects of system performance and are not intended to.
+
+The scripts and programs are designed to make it relatively easy to vary
+different parameters to measure the effects that can be observed by tuning
+and varying the number of clients.
+
+The goal of performing the test is to find the combination of number of
+clients, parameter settings and database size that produces the highest
+throughput. To do this accurately will require you to invest a substantial
+amount of time and effort. If you want approximate results, you can do it
+fairly quickly.
+
+**************** The test transactions ****************************************
+
+The transactions executed by the test are a simulation of part of the
+processing required to make a withdrawal or deposit through an atm machine.
+No real bank would have a transaction this simple.
+
+The transaction updates the customer's account record, the bank's branch
+record and teller record by adjusting the current balance in each of them.
+It creates a history record to record what was done and when. That's it.
+
+**************** Building the database ****************************************
+
+To build a database, first decide how big you want to make it and where
+you are going to put it.  Try a small one first to make sure you have
+everything set up and working correctly.
+
+If you start with a big database and something isn't set up right, you will
+waste a lot of time. Building a large database may take an entire day.
+Building the small default configuration takes 5 or 10 minutes.
+
+Examine all the files in this directory.
+
+Edit the file atm.st according to where and how big you want the
+database extents.
+
+Edit the script "build" and set the variables SCALE and NUMLOADERS.
+
+	SCALE is the size of the database scaled according to the
+	number of tps.  The default database requires about 170 megabytes
+	of disk space (roughly).
+
+	NUMLOADERS is the number of processes you want to use to
+	load the database.  Somewhere between 3 and 6 is good (depends
+	on machine size, number of cpus, etc.). Practice with a small
+	database to find the optimum.
+
+	CLUSTERSIZE is the before-image cluster size for the database.
+	You should probably set this to 4096 (or possibly much higher)
+	after you have built the database.
+
+	You might want to change the startup parameters for the
+	server also.
+
+When you are ready, run the script "build". Then fix the mistakes you made
+and start over.
+
+The build script does the following:
+
+	Creates the database using "atm.st" if it exists or creates a
+	single file database in the current directory if it doesn't.
+	If the database is large, this step may take a while.
+	
+	Starts a server, biw writer and page writers.
+
+	Loads the schema into the empty database by running create.p.
+
+	Starts one or more loader processes to load the account,
+	branch, and teller tables. The program "load.p" is executed
+	by each loader process to create the database.
+
+Each loader creates a file named "buildnn.log" where nn is the loader
+number. The log files will have periodic messages (after every 5 % of
+the total number of rows have been loaded) indicating how many rows have
+been created and an estimate of the amount of time required to finish.
+
+To build a large database may take a long time.
+Once you have built it, be careful not to delete it by accident.
+
+The build script also writes messages to the file "build.log".
+
+After the database has been built, you can use the proshut command to
+to shut down the server.
+
+After the database is built, you should rebuild all the indexes.
+
+**************** Running the test *********************************************
+
+Practice with a small database to make sure you have your procedures set
+up correctly.
+
+The ATM test driver is the program "driver.p". This program reads configuration
+records from a database file called conifg. Each record corresponds to
+one test run. The field cfg-users determines the number of clients to spawn.
+The field cfg-runtime contains the number of seconds to run the test.
+Results are appended to the file results.log at the end of each run.
+load.p creates config records for 5 tests with 1 to 5 users, each one
+running for 10 minutes, reporting the results, and cleaning up. Adjust as
+desired.
+
+The ATM transaction loop is performed by the program atm1.p. When it starts
+up, it creates a client record for itself. The results for each client are
+stored in a separate client record. To start all the client at the same time,
+the driver locks the first account record. Each client tries to access this
+record when it is ready to start. The driver releases the lock when all
+clients have created their client records and are ready to start. Each client
+executes the transaction loop over and over until the required amount of
+test time has elapsed.
+
+To start a ATM run, use the script 'go" to start the database. Then edit
+the config entries as desired, run the script "go" again to start the
+test cycle going (or make your own variation of the script).
+
+For the results to be valid, you must:
+
+	Run the test for at least 15 minutes steady state (after warmup) and
+	not more than 60 minutes.
+
+	At least one checkpoint must occur during the run.
+
+	The database must be scaled at least as large as the number of
+	tps you get. If you get 50 tps, the database must have at least
+	5,000,000 accounts, 5,000 tellers, and 500 branches.
+
+	95% of the transactions must take less than 1 second.
+
+Shorter run times (5 minutes) are handy for testing the effect of your changes
+without having to wait a long time between runs.
+
+These files are just a place to start from. You will have to tinker a lot
+if you want good results. There is no telling how many users will give the
+best results.
+
+For best results, the more disks you have the better. 20, 30, 40, or more.
+
+**************** Some advice on tuning ****************************************
+
+Limited tuning advice (worth what you paid for it) for those who are
+trying to get maximum possible throughput:
+
+	PRACTICE.
+
+	Use promon to observe what is going on.
+
+	Use sar and other system monitoring tools to check for problems
+	and unusual conditions (swapping, paging, cpu or disk maxed out,
+	etc.)
+
+	Change one thing at a time.
+
+	One of the things you must determine is the optimum number of
+	clients to run to find the peak throughput. The config file
+	allows you to easily vary the number of users and make several
+	runs in sequence. You add as many config records as you want
+	to run. Then the driver runs a test for each config record it
+	finds.
+
+	Always use the bi writer.
+
+	Set the bi cluster size large enough so only one checkpoint occurs
+	during a run. 8192, 16384, 32768
+
+	Put bi file on its own disk.
+
+	Set -B as large as available memory allows. Don't set it so high
+	that paging occurs.
+
+	Start with one or two apw's. Add more if the checkpoints display
+	in promon shows that buffers are being flushed at the end checkpoints.
+
+**************** Files in the kit *********************************************
+
+account.df	Schema definition for the account table
+atm1.p		ATM transaction generator
+atm4.p		Alternate transaction generator with 4 history tables
+atm.st		Structure file for the default database on 1 disk
+branch.df	Schema definition for the branch table
+build		Script to build complete test database
+client.df	Schema definition for the client table
+config.df	Schema definition for the config table
+create.p	Simple program to load schema into empty database
+driver.p	Program to run a series of ATM experiments
+filelist	The list of files that are in the kit
+go		Script to start an ATM experiment
+history1.df	Schema definition for history table 1
+history2.df	Schema definition for history table 2
+history3.df	Schema definition for history table 3
+history4.df	Schema definition for history table 4
+load.p		Program to load data into account, branch, and teller files.
+README		This file
+results.df	Schema definition for the results table
+teller.df	Schema definition for the teller table
+version.txt	A text file that identifies the test version.
+
+**************** Files created when building the database *********************
+
+Files that are created when building the database:
+
+atm.db		The database (also any files named in atm.st)
+atm.lg		The database message log (text)
+build.log	Log file from loading database
+build01.log	Log file from loading database
+   ...			...
+buildnn.log	Log file from loading database
+startup.log	Log from server startup
+
+**************** Files created when running the test **************************
+
+allruns.log	Cumulative run.log's
+clientnn.log	Temporary file created by each transaction generator
+		during a test run. Check these to make sure there are
+		no problems.
+lastrun.log	Detailed results from the last test run
+startup.log	Log file generated each time server is started.
+summary.log	Cumulative summary of results. Each test run appends a
+		short summary to this file.
+temp.log	Temporary file created during a test run. Appended to
+		summary.log when completed.
+
+**************** Stuff you need that is not part of the kit *******************
+
+You need to have a development version of Progress installed on your system.
+The test programs all use character mode and run in batch.
+There are no gui programs.
+
+From your dlc/bin we use:
+
+_mprosrv	Server/broker
+_mprshut	Page writers, watchdog, shutdown utility
+_progres	Client, 4GL interpreter
+_proutil	database utilities, used during build
+_dbutil		database utilities, used during build
+
+From dlc we use:
+
+empty.db	The empty database, used during build
+
+We also use the Data Dictionary during the build.
+
+**************** Things to watch out for **************************************
+Don't run out of disk space.
+
+Make sure the kernel parameters are configured for the number of users and
+shared memory sizes you need.
+
+Make sure you configure enough semaphores.
+
+Make sure you have enough swap space for the number of processes you are
+going to run.
+
+Check the database .lg file and the other log files for error reports.
+
+Don't delete the database by accident. If it is large, make backups
+after you build it.
+
+			- 30 -

@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "y" | prodel atm
+prostrct create atm -blocksize 8192
+prorest atm ./savedb/atm8.bak

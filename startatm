@@ -1,0 +1,5 @@
+#!/bin/sh
+proserve atm -p trnsactn.pf
+proapw atm
+probiw atm
+. ./go

@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "y" | prodel atm
+prostrct create atm
+prorest atm ./savedb/atm.bak
