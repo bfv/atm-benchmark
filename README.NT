@@ -1,0 +1,22 @@
+**************** The ATM performance testing kit ******************************
+**************** Modified for Wintel machines    ******************************
+**************** 15-Apr-02 tku
+
+These add on files are based on the original files from ghb. The purpose of
+these files is to make a port for Wintel machines and thus be able to benchmark
+with ATM on these systems running Microsoft Windows operating system.
+
+The shell scripts were converted into batch files without any change of
+functionality. Changes have been made to the driver.p file that now creates a
+launch.bat file to launch the benchmark client processes. The file is after the
+test completes deleted. For the purpose of coextistence of teh two versions of
+ATM the modified driver.p was named drivernt.p.
+
+tku.-
+
+**************** 07-May-03 bhg
+
+Just in case it is not obvious, you need to create extract the files to 
+the C:\ directory.  This will create the C:\Progress\Class\Atm directory and
+load the files there.  Once this is done, you can run the BUILD.BAT script to
+create the ATM database and the GO.BAT scripts to demo tuning techniques.

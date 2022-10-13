@@ -1,5 +1,13 @@
+# PDSOE 
 .settings/
 
+.dbconnection
 .project
 .propath
 build.config
+
+# db
+db/
+
+# src
+*.r

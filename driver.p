@@ -74,6 +74,10 @@ def var minClients      as integer no-undo.
 def var maxTps          as integer no-undo.
 def var topTps          as integer no-undo.
 
+&IF OPSYS = "WIN32" &THEN
+def stream batchStr. 
+&ENDIF
+
 output to lastrun.log append unbuffered.
 
 /* make sure there are some records for tests */
@@ -168,12 +172,23 @@ for each config:
         /* launch clients */
  
 	message string (time, "HH:MM:SS") "Launching clients...".
+&IF OPSYS = "WIN32" &THEN
+        output stream batchStr to "launch.bat".
+        put stream batchStr "@echo off" skip.
+        do clientNo = 1 to numClients:
+            progArgs = "-p " + progName /* + ">> client" + string(clientNo) + ".log" */ .
+            put stream batchStr unformatted "start /d" + os-getenv("CURDIR") + " /min /high /b " + os-getenv("DOCLIENT") + " " + progArgs skip.
+        end.
+        output stream batchStr close.
+
+        os-command no-wait launch.bat.
+&ELSE	
         do clientNo = 1 to numClients:
             progArgs = "-p " + progName + ">> client" +
 		      string(clientNo) + ".log 2>&1 &".
             unix silent $DOCLIENT value(progArgs).
         end.
- 
+&ENDIF 
         /* Ensure that all are ready to run. Each client creates a client
 	   record when he is ready to start. When all have created one
 	   then we can open the starting gate. */
@@ -499,7 +514,7 @@ for each results:
         results.runtime
         results.numtx
         results.tps
-	results.concurrency
+        results.concurrency
         results.avgres
         results.minres
         results.p50res
@@ -515,6 +530,10 @@ output close.
 
 os-append temp.log summary.log.
 os-delete temp.log.
+
+&IF OPSYS = "WIN32" &THEN
+os-delete launch.bat.
+&ENDIF
 
 /* append the detailed log */
 
