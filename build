@@ -63,6 +63,8 @@ SVOPT2="-B 1000 "
 SVOPT3="-bibufs 20"
 CLNOPT1="-b"
 LDROPT1="-b"
+
+cp schema/atm.st db/
 #
 # *******************************************************************
 # Some sanity checks...
@@ -79,7 +81,7 @@ LDROPT1="-b"
         echo "Exiting in disgrace."
         exit 1
     fi
-    if [ -f $DBNAME.st ]
+    if [ -f db/$DBNAME.st ]
     then
         echo "$DBNAME.st contains..."
         echo
@@ -112,41 +114,41 @@ LDROPT1="-b"
     echo $CURDIR >>$SUMMARY
     cat $DBNAME.st >>$SUMMARY
     echo >>$SUMMARY
-    $PROSTRCT create $DBNAME
-    echo "Copy empty database into $DBNAME ..." | tee -a $LOG
-    $PROCOPY $EMPTYDB $DBNAME
+    $PROSTRCT create db/$DBNAME
+    echo "Copy empty database into db/$DBNAME ..." | tee -a $LOG
+    $PROCOPY $EMPTYDB db/$DBNAME
 #
 # truncate the bi file and set cluster size
 #
     echo "Cluster size is $CLSZ." | tee -a $LOG
     echo "BI block size is $BIBSZ." | tee -a $LOG
     echo "Truncate $DBNAME.bi ..." | tee -a $LOG
-    $PROUTIL $DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
+    $PROUTIL db/$DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
 #
 # start the server
 #
-    echo "Starting server for $DBNAME ..." | tee -a $LOG
+    echo "Starting server for db/$DBNAME ..." | tee -a $LOG
     echo "Server options:" >>$LOG
     echo "Sv opt 1 " $SVOPT1 >>$LOG
     echo "Sv opt 2 " $SVOPT2 >>$LOG
     echo "Sv opt 3 " $SVOPT3 >>$LOG
     echo >>$LOG
-    $PROSV $DBNAME $SVOPT1 $SVOPT2 $SVOPT3 >>$LOG 2>&1
+    $PROSV db/$DBNAME $SVOPT1 $SVOPT2 $SVOPT3 >>$LOG 2>&1
     sleep 5
     echo "Starting bi writer ..." | tee -a $LOG
-    $PROBIW $DBNAME -C biw $BIWOPT1 >>$LOG 2>&1 &
+    $PROBIW db/$DBNAME -C biw $BIWOPT1 >>$LOG 2>&1 &
     sleep 3
     echo "Starting page writer ..." | tee -a $LOG
-    $PROAPW $DBNAME -C apw $APWOPT1 >>$LOG 2>&1 &
+    $PROAPW db/$DBNAME -C apw $APWOPT1 >>$LOG 2>&1 &
 #
 # load the dictionary entries
 #
     echo "Loading table definitions ..." | tee -a $LOG
-    $PROCL $DBNAME $CLNOPT1 -p create.p >>$LOG 2>&1
+    $PROCL db/$DBNAME $CLNOPT1 -p create.p >>$LOG 2>&1
 #
 # Load the data
 #
-    echo "Loading $DBNAME data using load.p ..." | tee -a $LOG
+    echo "Loading db/$DBNAME data using load.p ..." | tee -a $LOG
     echo "This will take awhile ..." | tee -a $LOG
 #
 # start the loader programs
@@ -156,7 +158,7 @@ LDROPT1="-b"
     do
         export SCALE NUMLOADERS LOADER 
         echo "Starting loader" $LOADER " in background ..." | tee -a $LOG
-        $PROCL $DBNAME $LDROPT1 -p load.p >>$LOG 2>&1 &
+        $PROCL db/$DBNAME $LDROPT1 -p load.p >>$LOG 2>&1 &
         LOADER=`expr $LOADER + 1`
     done
     echo "Database loading will continue in the background..."
