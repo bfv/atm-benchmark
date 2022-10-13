@@ -1,4 +1,5 @@
 ADD TABLE "history2"
+  AREA "Data Area"
   DUMP-NAME "history2"
 
 ADD FIELD "trx_id" OF "history2" AS integer 
@@ -49,6 +50,7 @@ ADD FIELD "fill1" OF "history2" AS character
   ORDER 80
 
 ADD INDEX "histid" ON "history2" 
+  AREA "Index Area"
   UNIQUE
   PRIMARY
   INDEX-FIELD "trx_id" ASCENDING 

@@ -6,13 +6,13 @@
 	
 	Copyright (c) 1995, Progress Software Corporation
 */	
-    run prodict/load_df.p ("account.df").
-    run prodict/load_df.p ("branch.df").
-    run prodict/load_df.p ("teller.df").
-    run prodict/load_df.p ("history1.df").
-    run prodict/load_df.p ("history2.df").
-    run prodict/load_df.p ("history3.df").
-    run prodict/load_df.p ("history4.df").
-    run prodict/load_df.p ("config.df").
-    run prodict/load_df.p ("client.df").
-    run prodict/load_df.p ("results.df").
+    run prodict/load_df.p ("schema/account.df").
+    run prodict/load_df.p ("schema/branch.df").
+    run prodict/load_df.p ("schema/teller.df").
+    run prodict/load_df.p ("schema/history1.df").
+    run prodict/load_df.p ("schema/history2.df").
+    run prodict/load_df.p ("schema/history3.df").
+    run prodict/load_df.p ("schema/history4.df").
+    run prodict/load_df.p ("schema/config.df").
+    run prodict/load_df.p ("schema/client.df").
+    run prodict/load_df.p ("schema/results.df").

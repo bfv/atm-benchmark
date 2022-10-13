@@ -1,4 +1,5 @@
 ADD TABLE "results"
+  AREA "Data Area"
   DESCRIPTION "results for each test."
   DUMP-NAME "results"
 
@@ -122,6 +123,7 @@ ADD FIELD "p95res" OF "results" AS decimal
   ORDER 160
 
 ADD INDEX "id" ON "results" 
+  AREA "Index Area"
   UNIQUE
   PRIMARY
   INDEX-FIELD "id" ASCENDING 

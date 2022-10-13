@@ -1,4 +1,5 @@
 ADD TABLE "teller"
+  AREA "Data Area"
   DUMP-NAME "teller"
 
 ADD FIELD "balance" OF "teller" AS decimal 
@@ -33,6 +34,7 @@ ADD FIELD "fill3" OF "teller" AS character
   ORDER 70
 
 ADD INDEX "teller" ON "teller" 
+  AREA "Index Area"
   UNIQUE
   PRIMARY
   INDEX-FIELD "id" ASCENDING 

@@ -1,4 +1,5 @@
 ADD TABLE "branch"
+  AREA "Data Area"
   DUMP-NAME "branch"
 
 ADD FIELD "balance" OF "branch" AS decimal 
@@ -28,6 +29,7 @@ ADD FIELD "fill3" OF "branch" AS character
   ORDER 50
 
 ADD INDEX "branch" ON "branch" 
+  AREA "Index Area"
   UNIQUE
   PRIMARY
   INDEX-FIELD "id" ASCENDING 

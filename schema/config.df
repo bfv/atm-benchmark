@@ -1,4 +1,5 @@
 ADD TABLE "config"
+  AREA "Data Area"
   DESCRIPTION "Describes the configuration for each test."
   DUMP-NAME "config"
 
@@ -50,6 +51,7 @@ ADD FIELD "rundown" OF "config" AS integer
   ORDER 60
 
 ADD INDEX "id" ON "config" 
+  AREA "Index Area"
   UNIQUE
   PRIMARY
   INDEX-FIELD "id" ASCENDING 

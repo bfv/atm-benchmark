@@ -1,4 +1,5 @@
 ADD TABLE "account"
+  AREA "Data Area"
   DUMP-NAME "account"
 
 ADD FIELD "balance" OF "account" AS decimal 
@@ -33,6 +34,7 @@ ADD FIELD "fill3" OF "account" AS character
   ORDER 60
 
 ADD INDEX "account" ON "account" 
+  AREA "Index Area"
   UNIQUE
   PRIMARY
   INDEX-FIELD "id" ASCENDING 

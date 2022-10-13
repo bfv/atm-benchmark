@@ -1,54 +1,56 @@
-ADD TABLE "history3"
-  DUMP-NAME "history3"
+ADD TABLE "history1"
+  AREA "Data Area"
+  DUMP-NAME "history1"
 
-ADD FIELD "trx_id" OF "history3" AS integer 
+ADD FIELD "trx_id" OF "history1" AS integer 
   FORMAT ">>>>>>>9"
   INITIAL "0"
   ORDER 5
 
-ADD FIELD "branch" OF "history3" AS integer 
+ADD FIELD "branch" OF "history1" AS integer 
   FORMAT ">>>>9"
   INITIAL "0"
   ORDER 10
 
-ADD FIELD "teller" OF "history3" AS integer 
+ADD FIELD "teller" OF "history1" AS integer 
   FORMAT ">>>>9"
   INITIAL "0"
   ORDER 20
 
-ADD FIELD "account" OF "history3" AS integer 
+ADD FIELD "account" OF "history1" AS integer 
   FORMAT ">>>>>>>>>9"
   INITIAL "0"
   ORDER 30
 
-ADD FIELD "balance" OF "history3" AS decimal 
+ADD FIELD "balance" OF "history1" AS decimal 
   FORMAT "->>,>>>,>>9.99"
   INITIAL "0"
   DECIMALS 2
   ORDER 40
 
-ADD FIELD "delta" OF "history3" AS decimal 
+ADD FIELD "delta" OF "history1" AS decimal 
   FORMAT "->>,>>>,>>9.99"
   INITIAL "0"
   DECIMALS 2
   ORDER 50
 
-ADD FIELD "trx_date" OF "history3" AS date 
+ADD FIELD "trx_date" OF "history1" AS date 
   FORMAT "99/99/99"
   INITIAL ?
   ORDER 60
 
-ADD FIELD "trx_time" OF "history3" AS integer 
+ADD FIELD "trx_time" OF "history1" AS integer 
   FORMAT ">>>>>9"
   INITIAL "0"
   ORDER 70
 
-ADD FIELD "fill1" OF "history3" AS character 
+ADD FIELD "fill1" OF "history1" AS character 
   FORMAT "x(40)"
   INITIAL "1234567890123456789012345"
   ORDER 80
 
-ADD INDEX "histid" ON "history3" 
+ADD INDEX "histid" ON "history1" 
+  AREA "Index Area"
   UNIQUE
   PRIMARY
   INDEX-FIELD "trx_id" ASCENDING 

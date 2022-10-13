@@ -6,8 +6,18 @@
 *
 * 21-Sep-1995 ghb
 *
-d atm.d1     f 160000
-d atm.d2
-b atm.b1
-a atm.a1     f 128
-a atm.a2
+
+#
+b .
+#
+d "Schema Area":6,64;1 .
+#
+d "Data Area":10,256;8 .
+#
+d "Index Area":20,32;8 .
+
+a atm.a1    f 2048
+a atm.a2    f 2048
+a atm.a3    f 2048
+a atm.a4    f 2048
+
