@@ -10,4 +10,5 @@ build.config
 db/
 
 # src
+*.log
 *.r
