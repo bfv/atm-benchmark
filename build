@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # ATM performance test:
 # build the test database
@@ -85,7 +85,7 @@ cp schema/atm.st db/
     then
         echo "$DBNAME.st contains..."
         echo
-        cat cat/$DBNAME.st
+        cat db/$DBNAME.st
         echo
     else
         echo "There is no $DBNAME.st."
@@ -106,18 +106,19 @@ cp schema/atm.st db/
     cat version.txt >$LOG
     date >>$LOG
 #
+#   cd to db dir to get all the references straight
     cd db
     
-    echo "Create void $DBNAME database using $DBNAME.st ..." | tee -a $LOG
-    cat $DBNAME.st >>$LOG
-    echo >>$SUMMARY
-    date >>$SUMMARY
-    echo >>$SUMMARY
-    echo $CURDIR >>$SUMMARY
-    cat $DBNAME.st >>$SUMMARY
-    echo >>$SUMMARY
-    $PROSTRCT create $DBNAME
-    echo "Copy empty database into db/$DBNAME ..." | tee -a $LOG
+    echo "Create void $DBNAME database using $DBNAME.st ..." | tee -a ../$LOG
+    cat $DBNAME.st >> ../$LOG
+    echo >> ../$SUMMARY
+    date >> ../$SUMMARY
+    echo >> ../$SUMMARY
+    echo $CURDIR >> ../$SUMMARY
+    cat $DBNAME.st >> ../$SUMMARY
+    echo >> ../$SUMMARY
+    $PROSTRCT create $DBNAME -blocksize 8192
+    echo "Copy empty database into db/$DBNAME ..." | tee -a ../$LOG
     $PROCOPY $EMPTYDB $DBNAME
 
     cd ..
@@ -127,7 +128,7 @@ cp schema/atm.st db/
     echo "Cluster size is $CLSZ." | tee -a $LOG
     echo "BI block size is $BIBSZ." | tee -a $LOG
     echo "Truncate $DBNAME.bi ..." | tee -a $LOG
-    $PROUTIL $DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
+    $PROUTIL db/$DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
 #
 # start the server
 #

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # ATM performanc test:
 # start a new test run
@@ -10,9 +10,7 @@ CURDIR=`pwd`
 #
 # where are we ?
 #
-HOSTNAME=`(hostname  2> $BIT_BUCKET ||
-	   uname -n  2> $BIT_BUCKET ||
-           uuname -l 2> $BIT_BUCKET) 2> $BIT_BUCKET`
+HOSTNAME=`hostname`
 #
 PROPATH=:$CURDIR
 #CPUS=`online -N`
@@ -61,7 +59,10 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
 #
 # start the test
 #
-    if [ -f db/$DBNAME.db -o "$TCPOPTS" != ""]
+    if [ -z "$TCPOPTS" ] 
+    then 
+        echo connecting with $TCPOPTS
+    elif [ -f db/$DBNAME.db ]  
     then
         echo "Using database db/$DBNAME."
     else
@@ -69,7 +70,8 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
         echo "Exiting in disgrace."
         exit 1
     fi
-    if [ -f db/$DBNAME.lk  -o "$TCPOPTS" != ""]
+
+    if [ -f db/$DBNAME.lk ] || [ "$TCPOPTS" != "" ]  
     then
 #
 # start driver now
