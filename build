@@ -106,24 +106,28 @@ cp schema/atm.st db/
     cat version.txt >$LOG
     date >>$LOG
 #
+    cd db
+    
     echo "Create void $DBNAME database using $DBNAME.st ..." | tee -a $LOG
-    cat db/$DBNAME.st >>$LOG
+    cat $DBNAME.st >>$LOG
     echo >>$SUMMARY
     date >>$SUMMARY
     echo >>$SUMMARY
     echo $CURDIR >>$SUMMARY
-    cat db/$DBNAME.st >>$SUMMARY
+    cat $DBNAME.st >>$SUMMARY
     echo >>$SUMMARY
-    $PROSTRCT create db/$DBNAME
+    $PROSTRCT create $DBNAME
     echo "Copy empty database into db/$DBNAME ..." | tee -a $LOG
-    $PROCOPY $EMPTYDB db/$DBNAME
+    $PROCOPY $EMPTYDB $DBNAME
+
+    cd ..
 #
 # truncate the bi file and set cluster size
 #
     echo "Cluster size is $CLSZ." | tee -a $LOG
     echo "BI block size is $BIBSZ." | tee -a $LOG
     echo "Truncate $DBNAME.bi ..." | tee -a $LOG
-    $PROUTIL db/$DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
+    $PROUTIL $DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
 #
 # start the server
 #
