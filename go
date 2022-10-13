@@ -61,7 +61,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
 #
 # start the test
 #
-    if [ -f db/$DBNAME.db ]
+    if [ -f db/$DBNAME.db -o "$TCPOPTS" != ""]
     then
         echo "Using database db/$DBNAME."
     else
@@ -69,7 +69,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
         echo "Exiting in disgrace."
         exit 1
     fi
-    if [ -f db/$DBNAME.lk ]
+    if [ -f db/$DBNAME.lk  -o "$TCPOPTS" != ""]
     then
 #
 # start driver now
@@ -90,6 +90,12 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
 #
 # need to start database
 #
+    if [ "$TCPOPTS" != "" ]
+    then
+        echo start the database, TCPOPTS=$TCPOPTS
+        exit 1
+    fi
+
     echo "Starting $DBNAME database using $PROSV, but first"
     echo "we sleep 5 seconds in case you forgot something..."
     sleep 5
