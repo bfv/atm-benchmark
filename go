@@ -52,8 +52,8 @@ SVOPT3="-bibufs 20"
 #
 CLOPT="-l 5"
 #
-DOCLIENT="$PROCL $DBNAME -b -rand 2"
-DODRIVER="$PROCL $DBNAME -b -rand 2 -p $DRIVER"
+DOCLIENT="$PROCL db/$DBNAME -b -rand 2"
+DODRIVER="$PROCL db/$DBNAME -b -rand 2 -p $DRIVER"
 #
 # do it
 #
@@ -61,20 +61,20 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
 #
 # start the test
 #
-    if [ -f $DBNAME.db ]
+    if [ -f db/$DBNAME.db ]
     then
-        echo "Using database $DBNAME."
+        echo "Using database db/$DBNAME."
     else
-        echo "There is no database called $DBNAME."
+        echo "There is no database called db/$DBNAME."
         echo "Exiting in disgrace."
         exit 1
     fi
-    if [ -f $DBNAME.lk ]
+    if [ -f db/$DBNAME.lk ]
     then
 #
 # start driver now
 #
-        echo "$DBNAME database is up."
+        echo "db/$DBNAME database is up."
 	echo "Starting test driver $DRIVER, but first"
         echo "we sleep 5 seconds in case you forgot something..."
         sleep 5
@@ -118,7 +118,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
 # start server
 #
     echo "Start $DBNAME database ..." | tee -a $RUNLOG
-    $PROSV $DBNAME $SVOPT1 $SVOPT2 $SVOPT3 >>$RUNLOG 2>&1
+    $PROSV db/$DBNAME $SVOPT1 $SVOPT2 $SVOPT3 >>$RUNLOG 2>&1
     sleep 3
 #
 # start before image writer
@@ -126,7 +126,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
     if [ "$BIW" = "yes" ]
     then
         echo "Start before image writer ..." | tee -a $RUNLOG
-        $PROBIW $DBNAME -C biw 2>&1 >>$RUNLOG &
+        $PROBIW db/$DBNAME -C biw 2>&1 >>$RUNLOG &
     fi
 #
 # start after image writer
@@ -134,7 +134,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
     if [ "$AIW" = "yes" ]
     then
         echo "Start after image writer ..." | tee -a $RUNLOG
-        $PROAIW $DBNAME -C aiw 2>&1 >>$RUNLOG &
+        $PROAIW db/$DBNAME -C aiw 2>&1 >>$RUNLOG &
     fi
 #
 # start page cleaners (try 1 per db disk + 1 extra)
@@ -142,10 +142,10 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
     while [ $NUMAPW -gt 0 ]
     do
         echo "Start page writer $NUMAPW ..." | tee -a $RUNLOG
-        $PROAPW $DBNAME -C apw 2>&1 >>$RUNLOG &
+        $PROAPW db/$DBNAME -C apw 2>&1 >>$RUNLOG &
         NUMAPW=`expr $NUMAPW - 1`
     done
 #
     date >>$RUNLOG
-    echo "Database $DBNAME should now be running."
+    echo "Database db/$DBNAME should now be running."
     echo "Type $0 again to start the test driver."
