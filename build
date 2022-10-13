@@ -60,7 +60,7 @@ PROAIW=$EXEBIN/_mprshut
 #
 SVOPT1="-n 20 -L 1024"
 SVOPT2="-B 1000 "
-SVOPT3="-bibufs 20"
+SVOPT3="-bibufs 20 $TCPOPTS"
 CLNOPT1="-b"
 LDROPT1="-b"
 
