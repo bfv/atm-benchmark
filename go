@@ -52,8 +52,8 @@ SVOPT3="-bibufs 20"
 #
 CLOPT="-l 5"
 #
-DOCLIENT="$PROCL db/$DBNAME -b -rand 2"
-DODRIVER="$PROCL db/$DBNAME -b -rand 2 -p $DRIVER"
+DOCLIENT="$PROCL db/$DBNAME $TCPOPTS -b -rand 2"
+DODRIVER="$PROCL db/$DBNAME $TCPOPTS -b -rand 2 -p $DRIVER"
 #
 # do it
 #
