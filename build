@@ -69,13 +69,13 @@ cp schema/atm.st db/
 # *******************************************************************
 # Some sanity checks...
 #
-    if [ -f $DBNAME.lk ]
+    if [ -f db/$DBNAME.lk ]
     then
         echo "Found a $DBNAME.lk. Server running?"
         echo "Exiting in disgrace."
         exit 1
     fi
-    if [ -f $DBNAME.db ]
+    if [ -f db/$DBNAME.db ]
     then
         echo "You already have a $DBNAME.db."
         echo "Exiting in disgrace."
@@ -85,7 +85,7 @@ cp schema/atm.st db/
     then
         echo "$DBNAME.st contains..."
         echo
-        cat $DBNAME.st
+        cat cat/$DBNAME.st
         echo
     else
         echo "There is no $DBNAME.st."
