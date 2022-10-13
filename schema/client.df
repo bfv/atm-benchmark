@@ -56,7 +56,7 @@ ADD FIELD "rundown" OF "client" AS integer
 
 ADD FIELD "topres" OF "client" AS integer 
   DESCRIPTION "residence time in ms of longest transaction"
-  FORMAT ">>>>>9"
+  FORMAT ">>,>>>,>>9"
   INITIAL "0"
   ORDER 90
 

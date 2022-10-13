@@ -51,14 +51,14 @@ ADD FIELD "rundown" OF "results" AS integer
   ORDER 60
 
 ADD FIELD "numtx" OF "results" AS integer 
-  FORMAT ">>>>>9"
+  FORMAT ">>,>>>,>>9"
   INITIAL "0"
   LABEL "Trans"
   COLUMN-LABEL "Trans"
   ORDER 70
 
 ADD FIELD "tps" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "Tps"
   COLUMN-LABEL "Tps"
@@ -73,7 +73,7 @@ ADD FIELD "maxtps" OF "results" AS integer
   ORDER 90
 
 ADD FIELD "concurrency" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "Conc"
   COLUMN-LABEL "Conc"
@@ -81,42 +81,42 @@ ADD FIELD "concurrency" OF "results" AS decimal
   ORDER 100
 
 ADD FIELD "avgres" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "Avg R"
   DECIMALS 2
   ORDER 110
 
 ADD FIELD "minres" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "Min R"
   DECIMALS 2
   ORDER 120
 
 ADD FIELD "maxres" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "Max R"
   DECIMALS 2
   ORDER 130
 
 ADD FIELD "p50res" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "50% R"
   DECIMALS 2
   ORDER 140
 
 ADD FIELD "p90res" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "90% R"
   DECIMALS 2
   ORDER 150
 
 ADD FIELD "p95res" OF "results" AS decimal 
-  FORMAT ">>>9.9"
+  FORMAT ">,>>9.9"
   INITIAL "0"
   LABEL "95% R"
   DECIMALS 2

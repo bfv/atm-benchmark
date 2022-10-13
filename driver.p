@@ -46,10 +46,10 @@ def var totalTx         as integer no-undo.
 def var concurrency     as decimal label "Conc"  format ">9.9" no-undo.
 def var txPerSec        as decimal label "Tps"   format ">>9.99" no-undo.
 def var seconds         as decimal label "Secs"  format ">9.9" no-undo.
-def var resPercent      as decimal label "Pct"   format ">>>9.9" no-undo.
-def var cumPercent      as decimal label "Cum %" format ">>>9.9" no-undo.
+def var resPercent      as decimal label "Pct"   format ">,>>9.9" no-undo.
+def var cumPercent      as decimal label "Cum %" format ">,>>9.9" no-undo.
 def var totResidence    as integer no-undo.
-def var resCount        as integer label "Trans" format ">>>>>9"
+def var resCount        as integer label "Trans" format ">>,>>>,>>9"
 				   extent 100 no-undo.
 def var lastCountIndex  as decimal no-undo.
 def var maxRes          as decimal label "Max R" format ">9.9" no-undo.
@@ -59,7 +59,7 @@ def var p50Res          as decimal label "50% R" format ">9.9" no-undo.
 def var p90Res          as decimal label "90% R" format ">9.9" no-undo.
 def var p95Res          as decimal label "95% R" format ">9.9" no-undo. 
 def var peak            as integer initial ? no-undo.
-def var periodTps       as decimal label "Tps"   format ">>>9.9" no-undo.
+def var periodTps       as decimal label "Tps"   format ">,>>9.9" no-undo.
 def var periodTime      as integer label "Sec"   format ">>>9" no-undo.
 def var periodStart     as integer no-undo.
 def var curPeriod       as integer no-undo.
@@ -494,8 +494,8 @@ display "Clients  Tps |--------|---------|---------|---------|---------|"
 for each results:
     i = (results.tps * (50 / topTps)).
     display
-        results.clients format ">>>>>9" no-label
-        results.tps format ">>>9.9" no-label
+        results.clients format ">>,>>>,>>9" no-label
+        results.tps format ">,>>9.9" no-label
 	fill ("*", i) format "x(50)"  no-label
         with frame gf3 no-box no-labels.
 end.
