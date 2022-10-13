@@ -112,7 +112,7 @@ cp schema/atm.st db/
     date >>$SUMMARY
     echo >>$SUMMARY
     echo $CURDIR >>$SUMMARY
-    cat $DBNAME.st >>$SUMMARY
+    cat db/$DBNAME.st >>$SUMMARY
     echo >>$SUMMARY
     $PROSTRCT create db/$DBNAME
     echo "Copy empty database into db/$DBNAME ..." | tee -a $LOG
