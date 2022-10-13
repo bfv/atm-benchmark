@@ -36,7 +36,7 @@ SUMMARY=summary.log
 #
 # A copy of the empty database is loaded from here
 #
-EMPTYDB=$DLC/empty
+EMPTYDB=$DLC/empty8
 #
 # Use executables in this directory for utilities to make database
 #
@@ -107,7 +107,7 @@ cp schema/atm.st db/
     date >>$LOG
 #
     echo "Create void $DBNAME database using $DBNAME.st ..." | tee -a $LOG
-    cat $DBNAME.st >>$LOG
+    cat db/$DBNAME.st >>$LOG
     echo >>$SUMMARY
     date >>$SUMMARY
     echo >>$SUMMARY
