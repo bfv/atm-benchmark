@@ -1,0 +1,77 @@
+DBNAME=atm
+#
+# database size in tps
+#
+SCALE=10
+#
+# bi file cluster and block size
+#
+CLSZ=2048
+BIBSZ=16
+#
+# where messages go
+#
+LOG=build.log
+#
+# A copy of the empty database is loaded from here
+#
+EMPTYDB=$DLC/empty8
+#
+# Use executables in this directory for utilities to make database
+#
+UTILBIN=$DLC/bin
+#
+PROUTIL=$UTILBIN/_proutil
+PROCOPY="$UTILBIN/_dbutil procopy"
+PROSTRCT="$UTILBIN/_dbutil prostrct"
+#
+# Use executables in this directory for server, client, page writers
+#
+EXEBIN=$DLC/bin
+#
+PROSV=$EXEBIN/_mprosrv
+PROCL=$EXEBIN/_progres
+PROAPW=$EXEBIN/_mprshut
+PROBIW=$EXEBIN/_mprshut
+PROAIW=$EXEBIN/_mprshut
+#
+# Server options
+#
+NETWORKOPTS="-S 5300 -minport 5302 -maxport 5315"
+SVOPT1="-n 20 -L 1024"
+SVOPT2="-B 1000 "
+SVOPT3="-bibufs 20"
+CLNOPT1="-b"
+LDROPT1="-b"
+
+#
+# bi file cluster and block size
+#
+CLSZ=2048
+BIBSZ=16
+
+
+#
+# truncate the bi file and set cluster size
+#
+echo "Cluster size is $CLSZ." | tee -a $LOG
+echo "BI block size is $BIBSZ." | tee -a $LOG
+echo "Truncate $DBNAME.bi ..." | tee -a $LOG
+$PROUTIL db/$DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
+
+#
+# start the server
+#
+echo "Starting server for db/$DBNAME ..." | tee -a $LOG
+echo "Server options:" >>$LOG
+echo "Sv opt 1 " $SVOPT1 >>$LOG
+echo "Sv opt 2 " $SVOPT2 >>$LOG
+echo "Sv opt 3 " $SVOPT3 >>$LOG
+echo >>$LOG
+$PROSV db/$DBNAME $SVOPT1 $SVOPT2 $SVOPT3 $NETWORKOPTS >>$LOG 2>&1
+sleep 5
+echo "Starting bi writer ..." | tee -a $LOG
+$PROBIW db/$DBNAME -C biw $BIWOPT1 >>$LOG 2>&1 &
+sleep 3
+echo "Starting page writer ..." | tee -a $LOG
+$PROAPW db/$DBNAME -C apw $APWOPT1 >>$LOG 2>&1 &
