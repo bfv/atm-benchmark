@@ -1,4 +1,5 @@
 DBNAME=atm
+FQDB=/data/db/$DBNAME
 #
 # database size in tps
 #
@@ -57,21 +58,21 @@ BIBSZ=16
 echo "Cluster size is $CLSZ." | tee -a $LOG
 echo "BI block size is $BIBSZ." | tee -a $LOG
 echo "Truncate $DBNAME.bi ..." | tee -a $LOG
-$PROUTIL db/$DBNAME -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
+$PROUTIL $FQDB -C truncate bi -G 1 -bi $CLSZ -biblocksize $BIBSZ >>$LOG
 
 #
 # start the server
 #
-echo "Starting server for db/$DBNAME ..." | tee -a $LOG
+echo "Starting server for $FQDB ..." | tee -a $LOG
 echo "Server options:" >>$LOG
 echo "Sv opt 1 " $SVOPT1 >>$LOG
 echo "Sv opt 2 " $SVOPT2 >>$LOG
 echo "Sv opt 3 " $SVOPT3 >>$LOG
 echo >>$LOG
-$PROSV db/$DBNAME $SVOPT1 $SVOPT2 $SVOPT3 $NETWORKOPTS >>$LOG 2>&1
+$PROSV $FQDB $SVOPT1 $SVOPT2 $SVOPT3 $NETWORKOPTS >>$LOG 2>&1
 sleep 5
 echo "Starting bi writer ..." | tee -a $LOG
-$PROBIW db/$DBNAME -C biw $BIWOPT1 >>$LOG 2>&1 &
+$PROBIW $FQDB -C biw $BIWOPT1 >>$LOG 2>&1 &
 sleep 3
 echo "Starting page writer ..." | tee -a $LOG
-$PROAPW db/$DBNAME -C apw $APWOPT1 >>$LOG 2>&1 &
+$PROAPW $FQDB -C apw $APWOPT1 >>$LOG 2>&1 &

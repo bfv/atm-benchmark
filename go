@@ -21,6 +21,7 @@ CPUS=1
 #
 #
 DBNAME=atm
+FQDB=/data/db/$DBNAME
 DRIVER="driver.p"
 RUNLOG="lastrun.log"
 TEMPLOG="temp.log"
@@ -50,8 +51,8 @@ SVOPT3="-bibufs 20"
 #
 CLOPT="-l 5"
 #
-DOCLIENT="$PROCL db/$DBNAME $TCPOPTS -b -rand 2"
-DODRIVER="$PROCL db/$DBNAME $TCPOPTS -b -rand 2 -p $DRIVER"
+DOCLIENT="$PROCL $FQDB $TCPOPTS -b -rand 2"
+DODRIVER="$PROCL $FQDB $TCPOPTS -b -rand 2 -p $DRIVER"
 #
 # do it
 #
@@ -62,21 +63,21 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
     if [ -z "$TCPOPTS" ] 
     then 
         echo connecting with $TCPOPTS
-    elif [ -f db/$DBNAME.db ]  
+    elif [ -f $FQDB.db ]  
     then
-        echo "Using database db/$DBNAME."
+        echo "Using database $FQDB."
     else
-        echo "There is no database called db/$DBNAME."
+        echo "There is no database called $FQDB."
         echo "Exiting in disgrace."
         exit 1
     fi
 
-    if [ -f db/$DBNAME.lk ] || [ "$TCPOPTS" != "" ]  
+    if [ -f $FQDB.lk ] || [ "$TCPOPTS" != "" ]  
     then
 #
 # start driver now
 #
-        echo "db/$DBNAME database is up."
+        echo "$FQDB database is up."
 	echo "Starting test driver $DRIVER, but first"
         echo "we sleep 5 seconds in case you forgot something..."
         sleep 5
@@ -126,7 +127,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
 # start server
 #
     echo "Start $DBNAME database ..." | tee -a $RUNLOG
-    $PROSV db/$DBNAME $SVOPT1 $SVOPT2 $SVOPT3 >>$RUNLOG 2>&1
+    $PROSV $FQDB $SVOPT1 $SVOPT2 $SVOPT3 >>$RUNLOG 2>&1
     sleep 3
 #
 # start before image writer
@@ -134,7 +135,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
     if [ "$BIW" = "yes" ]
     then
         echo "Start before image writer ..." | tee -a $RUNLOG
-        $PROBIW db/$DBNAME -C biw 2>&1 >>$RUNLOG &
+        $PROBIW $FQDB -C biw 2>&1 >>$RUNLOG &
     fi
 #
 # start after image writer
@@ -142,7 +143,7 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
     if [ "$AIW" = "yes" ]
     then
         echo "Start after image writer ..." | tee -a $RUNLOG
-        $PROAIW db/$DBNAME -C aiw 2>&1 >>$RUNLOG &
+        $PROAIW $FQDB -C aiw 2>&1 >>$RUNLOG &
     fi
 #
 # start page cleaners (try 1 per db disk + 1 extra)
@@ -150,10 +151,10 @@ export TEMPLOG RUNLOG PROPATH DBNAME DOCLIENT
     while [ $NUMAPW -gt 0 ]
     do
         echo "Start page writer $NUMAPW ..." | tee -a $RUNLOG
-        $PROAPW db/$DBNAME -C apw 2>&1 >>$RUNLOG &
+        $PROAPW $FQDB -C apw 2>&1 >>$RUNLOG &
         NUMAPW=`expr $NUMAPW - 1`
     done
 #
     date >>$RUNLOG
-    echo "Database db/$DBNAME should now be running."
+    echo "Database $FQDB should now be running."
     echo "Type $0 again to start the test driver."
